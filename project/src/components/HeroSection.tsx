@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Rocket, Calendar, Users, Lightbulb } from 'lucide-react';
 import Button from './Button';
 import { getCountdown } from '../utils/formatDate';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeroSectionProps {
   eventDate: string;
@@ -11,6 +12,7 @@ interface HeroSectionProps {
 
 const HeroSection: React.FC<HeroSectionProps> = ({ eventDate }) => {
   const [countdown, setCountdown] = useState(getCountdown(eventDate));
+  const { t, language, dir } = useLanguage();
   
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,25 +56,30 @@ const HeroSection: React.FC<HeroSectionProps> = ({ eventDate }) => {
           variants={containerVariants}
           initial="hidden"
           animate="visible"
+          dir={dir}
         >
           <motion.div variants={itemVariants} className="inline-block mb-6">
-            <div className="bg-white/20 p-3 rounded-full backdrop-blur-sm">
+            <motion.div 
+              className="bg-white/20 p-3 rounded-full backdrop-blur-sm"
+              whileHover={{ scale: 1.1, rotate: 10 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
               <Rocket size={40} className="text-white" />
-            </div>
+            </motion.div>
           </motion.div>
           
           <motion.h1 
             variants={itemVariants}
-            className="text-4xl md:text-6xl font-bold mb-6 leading-tight"
+            className="text-4xl md:text-6xl font-bold mb-6 leading-tight animate-pulse-slow"
           >
-            Turn Your Ideas Into Reality in Just One Weekend
+            {t('hero_title')}
           </motion.h1>
           
           <motion.p 
             variants={itemVariants}
             className="text-xl md:text-2xl mb-10 text-indigo-100 max-w-3xl mx-auto"
           >
-            Join the most exciting startup challenge in Sur, Oman and build your MVP with a team of talented individuals.
+            {t('hero_subtitle')}
           </motion.p>
           
           <motion.div 
@@ -81,34 +88,63 @@ const HeroSection: React.FC<HeroSectionProps> = ({ eventDate }) => {
           >
             <Link to="/register">
               <Button size="lg" className="px-8 py-4 text-lg shadow-lg">
-                Join the Challenge
+                {t('hero_button')}
               </Button>
             </Link>
             <Link to="/schedule">
               <Button variant="outline" size="lg" className="px-8 py-4 text-lg border-white text-white hover:bg-white/10">
-                View Schedule
+                {t('hero_learn_more')}
               </Button>
             </Link>
           </motion.div>
           
-          <motion.div variants={itemVariants}>
+          <motion.div 
+            variants={itemVariants}
+            className="animate-scale-in"
+          >
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 md:p-8 shadow-xl">
-              <h2 className="text-xl font-semibold mb-2">Event Starts In</h2>
-              <p className="text-indigo-200 mb-4">Sur, Oman</p>
+              <h2 className="text-xl font-semibold mb-2">{t('schedule_event_starts')}</h2>
+              <p className="text-indigo-200 mb-2">{t('schedule_location')}</p>
+              <p className={`text-indigo-100 mb-4 ${language === 'ar' ? 'text-right' : 'text-left'}`} dir={dir}>
+                <span>{language === 'ar' ? 'الفعالية تبدأ: ' : 'Event Date: '}</span>
+                <span className="font-bold">{t('hero_date')}</span>
+              </p>
               <div className="grid grid-cols-4 gap-2 md:gap-4">
                 {[
-                  { label: 'Days', value: countdown.days },
-                  { label: 'Hours', value: countdown.hours },
-                  { label: 'Minutes', value: countdown.minutes },
-                  { label: 'Seconds', value: countdown.seconds },
+                  { label: t('schedule_days'), value: countdown.days },
+                  { label: t('schedule_hours'), value: countdown.hours },
+                  { label: t('schedule_minutes'), value: countdown.minutes },
+                  { label: t('schedule_seconds'), value: countdown.seconds },
                 ].map((item) => (
                   <div key={item.label} className="text-center">
-                    <div className="bg-white/10 rounded-lg p-3 md:p-4">
+                    <motion.div 
+                      className="bg-white/10 rounded-lg p-3 md:p-4"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                    >
                       <div className="text-2xl md:text-4xl font-bold">{item.value}</div>
                       <div className="text-xs md:text-sm mt-1 text-indigo-200">{item.label}</div>
-                    </div>
+                    </motion.div>
                   </div>
                 ))}
+              </div>
+              
+              <div className="mt-4 text-center">
+                <p className="text-indigo-100">
+                  {language === 'ar' ? (
+                    <>
+                      <span className="font-bold">الخميس ٣٠ / ١٠ / ٢٠٢٥</span>
+                      <span> - </span>
+                      <span className="font-bold">السبت ١ / ١١ / ٢٠٢٥</span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-bold">Thursday 30/10/2025</span>
+                      <span> - </span>
+                      <span className="font-bold">Saturday 01/11/2025</span>
+                    </>
+                  )}
+                </p>
               </div>
             </div>
           </motion.div>
@@ -119,34 +155,52 @@ const HeroSection: React.FC<HeroSectionProps> = ({ eventDate }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.6 }}
           className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto"
+          dir={dir}
         >
           {[
             { 
               icon: <Lightbulb size={24} />, 
-              title: 'Pitch Your Idea', 
-              description: 'Share your innovative concept and get feedback from mentors and peers.' 
+              title: language === 'ar' ? 'اطرح فكرتك' : 'Pitch Your Idea', 
+              description: language === 'ar' 
+                ? 'شارك مفهومك المبتكر واحصل على تعليقات من الموجهين والأقران.'
+                : 'Share your innovative concept and get feedback from mentors and peers.' 
             },
             { 
               icon: <Users size={24} />, 
-              title: 'Build Your Team', 
-              description: 'Connect with developers, designers, and business experts to form the perfect team.' 
+              title: language === 'ar' ? 'بناء فريقك' : 'Build Your Team', 
+              description: language === 'ar'
+                ? 'تواصل مع المطورين والمصممين وخبراء الأعمال لتشكيل الفريق المثالي.'
+                : 'Connect with developers, designers, and business experts to form the perfect team.' 
             },
             { 
               icon: <Calendar size={24} />, 
-              title: 'Launch in 48 Hours', 
-              description: 'Go from concept to MVP in just one weekend with expert guidance.' 
+              title: language === 'ar' ? 'إطلاق في ٤٨ ساعة' : 'Launch in 48 Hours', 
+              description: language === 'ar'
+                ? 'انتقل من المفهوم إلى النموذج الأولي في عطلة نهاية الأسبوع فقط مع توجيه الخبراء.'
+                : 'Go from concept to MVP in just one weekend with expert guidance.' 
             },
           ].map((feature, index) => (
-            <div 
+            <motion.div 
               key={index} 
               className="bg-white/10 backdrop-blur-sm rounded-lg p-6 hover:bg-white/15 transition-colors"
+              whileHover={{ 
+                y: -5,
+                boxShadow: "0 10px 25px -5px rgba(66, 153, 225, 0.4)"
+              }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.9 + (index * 0.1), duration: 0.5 }}
             >
-              <div className="bg-indigo-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+              <motion.div 
+                className="bg-indigo-600 p-3 rounded-full w-12 h-12 flex items-center justify-center mb-4"
+                whileHover={{ rotate: 5, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400 }}
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
               <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
               <p className="text-indigo-100">{feature.description}</p>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>

@@ -1,11 +1,11 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { motion } from 'framer-motion';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   icon?: React.ReactNode;
+  iconPosition?: 'left' | 'right';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -14,13 +14,14 @@ const Button: React.FC<ButtonProps> = ({
   size = 'md',
   isLoading = false,
   icon,
+  iconPosition = 'left',
   className = '',
   ...props
 }) => {
   const baseClasses = 'inline-flex items-center justify-center rounded-md font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2';
   
   const variantClasses = {
-    primary: 'bg-indigo-600 text-white hover:bg-indigo-700 focus:ring-indigo-500',
+    primary: 'bg-indigo-600 text-black hover:bg-indigo-700 focus:ring-indigo-500',
     secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-gray-500',
     outline: 'bg-transparent border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-gray-500',
     danger: 'bg-red-600 text-white hover:bg-red-700 focus:ring-red-500',
@@ -37,9 +38,7 @@ const Button: React.FC<ButtonProps> = ({
   const combinedClasses = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${loadingClasses} ${className}`;
 
   return (
-    <motion.button
-      whileHover={{ scale: isLoading ? 1 : 1.03 }}
-      whileTap={{ scale: isLoading ? 1 : 0.98 }}
+    <button
       className={combinedClasses}
       disabled={isLoading || props.disabled}
       {...props}
@@ -50,9 +49,10 @@ const Button: React.FC<ButtonProps> = ({
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       )}
-      {icon && !isLoading && <span className="mr-2">{icon}</span>}
+      {icon && !isLoading && iconPosition === 'left' && <span className="mr-2">{icon}</span>}
       {children}
-    </motion.button>
+      {icon && !isLoading && iconPosition === 'right' && <span className="ml-2">{icon}</span>}
+    </button>
   );
 };
 

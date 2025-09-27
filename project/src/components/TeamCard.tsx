@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Users, Award, ExternalLink } from 'lucide-react';
 import Button from './Button';
+import { useLanguage } from '../context/LanguageContext';
 
 interface TeamMember {
   id: string;
@@ -28,15 +29,18 @@ const TeamCard: React.FC<TeamCardProps> = ({
   category,
   isWinner = false,
 }) => {
+  const { t, dir } = useLanguage();
+  
   return (
     <motion.div
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
       className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 h-full flex flex-col"
+      dir={dir}
     >
       {isWinner && (
         <div className="bg-yellow-500 text-white px-4 py-1 text-sm font-semibold flex items-center justify-center">
           <Award size={16} className="mr-1" />
-          Winner
+          {t('winner')}
         </div>
       )}
       
@@ -56,7 +60,7 @@ const TeamCard: React.FC<TeamCardProps> = ({
         <p className="text-gray-600 mb-6 line-clamp-3">{description}</p>
         
         <div className="mb-4">
-          <h4 className="text-sm font-medium text-gray-700 mb-2">Team Members</h4>
+          <h4 className="text-sm font-medium text-gray-700 mb-2">{t('team_members')}</h4>
           <div className="flex -space-x-2 overflow-hidden">
             {members.map((member) => (
               <img
@@ -84,11 +88,11 @@ const TeamCard: React.FC<TeamCardProps> = ({
             icon={<ExternalLink size={16} />}
             onClick={() => window.open(projectUrl, '_blank')}
           >
-            View Project
+            {t('view_project')}
           </Button>
         ) : (
           <Button variant="outline" className="w-full" disabled>
-            Project Coming Soon
+            {t('project_coming_soon')}
           </Button>
         )}
       </div>

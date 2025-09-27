@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Upload, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Button from '../Button';
 import { ideaService } from '../../services/ideaService';
+import { useLanguage } from '../../context/LanguageContext';
 
 const IdeaForm: React.FC = () => {
+  const { t, dir } = useLanguage();
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -145,19 +147,20 @@ const IdeaForm: React.FC = () => {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl text-center"
+        dir={dir}
       >
         <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
           <CheckCircle2 size={32} className="text-green-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Idea Submitted Successfully!</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('idea_submitted_success')}</h2>
         <p className="text-gray-600 mb-6">
-          Your idea has been submitted and is now being reviewed. You'll be redirected to your dashboard shortly.
+          {t('idea_submitted_message')}
         </p>
         <Button
           onClick={() => navigate('/dashboard')}
           className="mx-auto"
         >
-          Go to Dashboard
+          {t('go_to_dashboard')}
         </Button>
       </motion.div>
     );
@@ -169,13 +172,14 @@ const IdeaForm: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl"
+      dir={dir}
     >
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
           <Upload size={28} className="text-indigo-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800">Submit Your Idea</h2>
-        <p className="text-gray-600 mt-1">Share your startup concept with the community</p>
+        <h2 className="text-2xl font-bold text-gray-800">{t('ideas_title')}</h2>
+        <p className="text-gray-600 mt-1">{t('ideas_subtitle')}</p>
       </div>
 
       {errors.submit && (
@@ -192,7 +196,7 @@ const IdeaForm: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-            Idea Title
+            {t('ideas_name')}
           </label>
           <input
             id="title"
@@ -212,7 +216,7 @@ const IdeaForm: React.FC = () => {
 
         <div className="mb-4">
           <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">
-            Category
+            {t('ideas_category')}
           </label>
           <select
             id="category"
@@ -223,7 +227,7 @@ const IdeaForm: React.FC = () => {
               errors.category ? 'border-red-500' : 'border-gray-300'
             }`}
           >
-            <option value="">Select a category</option>
+            <option value="">{t('select_category')}</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
@@ -237,7 +241,7 @@ const IdeaForm: React.FC = () => {
 
         <div className="mb-4">
           <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-            Description
+            {t('ideas_description')}
           </label>
           <textarea
             id="description"
@@ -360,7 +364,7 @@ const IdeaForm: React.FC = () => {
           className="w-full"
           isLoading={isLoading}
         >
-          Submit Idea
+          {t('ideas_submit')}
         </Button>
       </form>
     </motion.div>

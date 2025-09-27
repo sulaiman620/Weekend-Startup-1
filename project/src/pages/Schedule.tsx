@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, Clock, MapPin } from 'lucide-react';
-import { formatDate, formatTime, getCountdown } from '../utils/formatDate';
+import { formatDate, getCountdown } from '../utils/formatDate';
+import { useLanguage } from '../context/LanguageContext';
 
 const Schedule: React.FC = () => {
-  // Set event date to 30 days from now
-  const eventStartDate = new Date();
-  eventStartDate.setDate(eventStartDate.getDate() + 30);
+  // Get language context
+  const { t, language, dir } = useLanguage();
   
-  const eventEndDate = new Date(eventStartDate);
-  eventEndDate.setDate(eventEndDate.getDate() + 2);
+  // Set specific event dates: October 30 - November 1, 2025
+  const eventStartDate = new Date('2025-10-30T00:00:00');
+  const eventEndDate = new Date('2025-11-01T00:00:00');
   
   const [countdown, setCountdown] = useState(getCountdown(eventStartDate));
   
@@ -26,121 +27,123 @@ const Schedule: React.FC = () => {
     {
       day: 1,
       date: eventStartDate,
+      arabicDate: 'الخميس ٣٠ / ١٠ / ٢٠٢٥',
       events: [
         {
-          time: '09:00 AM',
-          title: 'Registration & Breakfast',
-          description: 'Check-in, get your badge, and enjoy breakfast while networking with other participants.',
-          location: 'Main Hall'
+          time: '16:00',
+          title: 'التسجيل',
+          description: 'تسجيل الحضور واستلام المستندات',
+          location: 'القاعة الرئيسية'
         },
         {
-          time: '10:00 AM',
-          title: 'Opening Ceremony',
-          description: 'Welcome address, introduction to mentors, and overview of the weekend.',
-          location: 'Auditorium'
+          time: '17:00',
+          title: 'برنامج الافتتاح',
+          description: 'كلمة ترحيبية وتقديم المرشدين ونظرة عامة على البرنامج',
+          location: 'المسرح'
         },
         {
-          time: '11:00 AM',
-          title: 'Idea Pitches',
-          description: 'One-minute pitches from participants with ideas looking to recruit team members.',
-          location: 'Auditorium'
+          time: '17:30',
+          title: 'ورشة تعريفية: كسر الجليد',
+          description: 'نشاط تفاعلي للتعارف بين المشاركين',
+          location: 'قاعة الورش أ'
         },
         {
-          time: '12:00 PM',
-          title: 'Lunch & Team Formation',
-          description: 'Form teams around the ideas that interest you most.',
-          location: 'Dining Area'
+          time: '17:45',
+          title: 'ورشة صناعة الأفكار الابتكارية',
+          description: 'تعلم تقنيات إنشاء أفكار مبتكرة وإبداعية',
+          location: 'قاعة الورش أ'
         },
         {
-          time: '01:30 PM',
-          title: 'Workshop: Validating Your Idea',
-          description: 'Learn techniques to quickly validate your startup concept.',
-          location: 'Workshop Room A'
+          time: '18:15',
+          title: 'ورشة تحليل المشاكل',
+          description: 'كيفية تحديد وتحليل المشكلات بطريقة منهجية',
+          location: 'قاعة الورش أ'
         },
         {
-          time: '03:00 PM',
-          title: 'Start Building!',
-          description: 'Teams begin working on their projects with mentor support.',
-          location: 'Team Workspaces'
+          time: '18:45',
+          title: 'ورشة التفكير التصميمي',
+          description: 'استخدام منهجية التفكير التصميمي لحل المشكلات',
+          location: 'قاعة الورش أ'
         },
         {
-          time: '06:00 PM',
-          title: 'Dinner',
-          description: 'Refuel with dinner while continuing to work on your projects.',
-          location: 'Dining Area'
+          time: '19:15',
+          title: 'عرض الأفكار والتصويت عليها',
+          description: 'تقديم الأفكار وتقييمها من قبل المشاركين',
+          location: 'المسرح'
         },
         {
-          time: '08:00 PM',
-          title: 'Optional: Mentor Office Hours',
-          description: 'Get one-on-one advice from industry experts.',
-          location: 'Mentoring Rooms'
+          time: '20:15',
+          title: 'بناء فرق العمل',
+          description: 'تشكيل الفرق حول الأفكار المختارة',
+          location: 'القاعة الرئيسية'
         },
         {
-          time: '11:00 PM',
-          title: 'Day 1 Wrap-up',
-          description: 'Brief check-in on progress. Teams can continue working or rest for tomorrow.',
-          location: 'Main Hall'
+          time: '21:00',
+          title: 'البدء في العمل',
+          description: 'بدء الفرق في العمل على مشاريعهم بدعم المرشدين',
+          location: 'مساحات العمل المشتركة'
         }
       ]
     },
     // Day 2
     {
       day: 2,
-      date: new Date(eventStartDate.getTime() + 24 * 60 * 60 * 1000),
+      date: new Date('2025-10-31T00:00:00'),
+      arabicDate: 'الجمعة ٣١ / ١٠ / ٢٠٢٥',
       events: [
         {
-          time: '08:00 AM',
-          title: 'Breakfast',
-          description: 'Start your day with breakfast and coffee.',
-          location: 'Dining Area'
+          time: '08:00',
+          title: 'التسجيل ووجبة الإفطار',
+          description: 'بدء اليوم بإفطار وقهوة مع استمرار التسجيل للمشاركين الجدد',
+          location: 'منطقة الطعام'
         },
         {
-          time: '09:00 AM',
-          title: 'Workshop: Pitch Perfect',
-          description: 'Learn how to create a compelling pitch for your startup.',
-          location: 'Workshop Room A'
+          time: '09:15',
+          title: 'عرض برنامج اليوم الثاني',
+          description: 'نظرة عامة على أنشطة اليوم الثاني',
+          location: 'القاعة الرئيسية'
         },
         {
-          time: '10:30 AM',
-          title: 'Mid-point Check-in',
-          description: 'Teams share progress and get feedback from mentors.',
-          location: 'Team Workspaces'
+          time: '09:30',
+          title: 'العمل على المشروع التجاري',
+          description: 'استمرار الفرق بالعمل على مشاريعهم مع توجيه من المرشدين',
+          location: 'مساحات العمل المشتركة'
         },
         {
-          time: '12:00 PM',
-          title: 'Lunch',
-          description: 'Lunch break with continued team work.',
-          location: 'Dining Area'
+          time: '13:00',
+          title: 'استراحة الغداء',
+          description: 'استراحة غداء مع الاستمرار بالعمل',
+          location: 'منطقة الطعام'
         },
         {
-          time: '01:00 PM',
-          title: 'Workshop: Business Model Canvas',
-          description: 'Learn how to structure your business model for success.',
-          location: 'Workshop Room B'
+          time: '14:00',
+          title: 'ورشة التقديم',
+          description: 'تعلم كيفية إنشاء عرض تقديمي مقنع لمشروعك',
+          location: 'قاعة الورش ب'
         },
         {
-          time: '02:30 PM',
-          title: 'Continue Building',
-          description: 'Teams continue developing their projects.',
-          location: 'Team Workspaces'
+          time: '15:00',
+          title: 'العمل مع الفرق – عرض قصير',
+          description: 'استمرار العمل مع تقديم عرض موجز للتقدم المحرز',
+          location: 'مساحات العمل المشتركة'
         },
         {
-          time: '06:00 PM',
-          title: 'Dinner',
-          description: 'Dinner break with continued team work.',
-          location: 'Dining Area'
+          time: '18:30',
+          title: 'عمل الفرق وجلسات التوجيه',
+          description: 'الاستمرار بالعمل مع توجيه مكثف من المرشدين',
+          location: 'مساحات العمل المشتركة'
         },
         {
-          time: '07:00 PM',
-          title: 'Pitch Preparation',
-          description: 'Start preparing your final presentation for tomorrow.',
-          location: 'Team Workspaces'
+          time: '19:30',
+          title: 'استراحة العشاء',
+          description: 'استراحة عشاء مع الاستمرار بالعمل',
+          location: 'منطقة الطعام'
         },
         {
-          time: '10:00 PM',
-          title: 'Day 2 Wrap-up',
-          description: 'Brief check-in on progress. Final night of development!',
-          location: 'Main Hall'
+          time: '20:30',
+          title: 'استعراض الأعمال لجميع الفرق – عرض قصير',
+          description: 'تقديم عرض موجز للتقدم المحرز من جميع الفرق',
+          location: 'القاعة الرئيسية'
         }
       ]
     },
@@ -148,60 +151,49 @@ const Schedule: React.FC = () => {
     {
       day: 3,
       date: eventEndDate,
+      arabicDate: 'السبت ١ / ١١ / ٢٠٢٥',
       events: [
         {
-          time: '08:00 AM',
-          title: 'Breakfast',
-          description: 'Final day breakfast and coffee.',
-          location: 'Dining Area'
+          time: '09:00',
+          title: 'التسجيل ووجبة الإفطار',
+          description: 'إفطار اليوم الأخير وقهوة',
+          location: 'منطقة الطعام'
         },
         {
-          time: '09:00 AM',
-          title: 'Final Touches',
-          description: 'Last chance to finalize your projects and presentations.',
-          location: 'Team Workspaces'
+          time: '09:15',
+          title: 'عرض برنامج اليوم الثالث',
+          description: 'نظرة عامة على أنشطة اليوم الأخير',
+          location: 'القاعة الرئيسية'
         },
         {
-          time: '12:00 PM',
-          title: 'Lunch',
-          description: 'Final lunch before presentations.',
-          location: 'Dining Area'
+          time: '09:30',
+          title: 'العمل على النموذج الأول وجلسات التوجيه',
+          description: 'اللمسات الأخيرة على المشاريع والعروض التقديمية',
+          location: 'مساحات العمل المشتركة'
         },
         {
-          time: '01:00 PM',
-          title: 'Submission Deadline',
-          description: 'All projects must be submitted by this time.',
-          location: 'Online Platform'
+          time: '13:00',
+          title: 'استراحة الغداء',
+          description: 'وجبة الغداء الأخيرة قبل العروض النهائية',
+          location: 'منطقة الطعام'
         },
         {
-          time: '02:00 PM',
-          title: 'Pitch Presentations',
-          description: 'Teams present their solutions to judges and audience.',
-          location: 'Auditorium'
+          time: '14:00',
+          title: 'التدريب على العرض النهائي',
+          description: 'التدرب على العرض النهائي وتلقي ملاحظات',
+          location: 'قاعة الورش أ'
         },
         {
-          time: '04:30 PM',
-          title: 'Judges Deliberation',
-          description: 'Judges evaluate presentations while teams network.',
-          location: 'Judges Room'
+          time: '15:00',
+          title: 'العروض والتقييم النهائي',
+          description: 'تقديم الفرق لمشاريعهم أمام الحكام والجمهور',
+          location: 'المسرح'
         },
         {
-          time: '05:30 PM',
-          title: 'Awards Ceremony',
-          description: 'Winners announced and prizes awarded.',
-          location: 'Auditorium'
-        },
-        {
-          time: '06:30 PM',
-          title: 'Closing Reception',
-          description: 'Celebrate your achievements with food, drinks, and networking.',
-          location: 'Main Hall'
-        },
-        {
-          time: '08:00 PM',
-          title: 'Event Conclusion',
-          description: 'Official end of the WeekendStartupSVC Challenge in Sur, Oman.',
-          location: 'Main Hall'
+          time: '17:00',
+          title: 'الحفل الختامي وإعلان الفائزين',
+          description: 'إعلان الفائزين وتوزيع الجوائز',
+          location: 'المسرح'
         }
       ]
     }
@@ -226,10 +218,10 @@ const Schedule: React.FC = () => {
           variants={fadeIn}
         >
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Event Schedule
+            جدول ستارت أب ويكند
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Your guide to the WeekendStartupSVC Challenge in Sur, Oman
+            برنامج فعاليات ستارت أب ويكند
           </p>
           
           <div className="bg-white rounded-xl shadow-md p-6 md:p-8">
@@ -251,11 +243,15 @@ const Schedule: React.FC = () => {
             </div>
             
             <div className="mt-6 text-center">
-              <p className="text-gray-700">
+              <p className="text-gray-700 mb-1" dir="ltr">
                 <Calendar className="inline-block mr-2" size={18} />
                 {formatDate(eventStartDate)} - {formatDate(eventEndDate)}
               </p>
-              <p className="text-gray-700 mt-1">
+              <p className="text-gray-700 mb-2 font-bold text-right" dir="rtl">
+                <span>الفعالية تبدأ: </span>
+                <span className="text-indigo-600">٣٠ / أكتوبر / ٢٠٢٥</span>
+              </p>
+              <p className="text-gray-700 mt-2">
                 <MapPin className="inline-block mr-2" size={18} />
                 Sur, Oman
               </p>
@@ -291,6 +287,7 @@ const Schedule: React.FC = () => {
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">Day {day.day}</h2>
                   <p className="text-gray-600">{formatDate(day.date)}</p>
+                  <p className="text-gray-600 font-bold text-right" dir="rtl">{day.arabicDate}</p>
                 </div>
               </motion.div>
               
@@ -303,16 +300,16 @@ const Schedule: React.FC = () => {
                   >
                     <div className="absolute -left-10 top-0 w-4 h-4 rounded-full bg-indigo-600"></div>
                     <div className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow">
-                      <div className="flex flex-wrap items-start justify-between mb-2">
+                      <div className="flex flex-wrap items-start justify-between mb-2" dir="rtl">
                         <h3 className="text-lg font-bold text-gray-900">{event.title}</h3>
                         <div className="flex items-center text-indigo-600 font-medium">
-                          <Clock size={16} className="mr-1" />
+                          <Clock size={16} className="mr-1 ml-1" />
                           {event.time}
                         </div>
                       </div>
-                      <p className="text-gray-600 mb-3">{event.description}</p>
-                      <div className="flex items-center text-gray-500 text-sm">
-                        <MapPin size={14} className="mr-1" />
+                      <p className="text-gray-600 mb-3 text-right" dir="rtl">{event.description}</p>
+                      <div className="flex items-center text-gray-500 text-sm justify-end" dir="rtl">
+                        <MapPin size={14} className="mr-1 ml-1" />
                         {event.location}
                       </div>
                     </div>

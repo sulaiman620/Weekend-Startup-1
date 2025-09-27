@@ -5,6 +5,7 @@ import { UserPlus, AlertCircle, CheckCircle, ChevronRight, ChevronLeft } from 'l
 import Button from '../Button';
 import useAuth from '../../hooks/useAuth';
 import { validateEmail, validatePassword, validateName } from '../../utils/validators';
+import { useLanguage } from '../../context/LanguageContext';
 
 interface FormData {
   name: string;
@@ -31,16 +32,17 @@ const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const { t, dir } = useLanguage();
 
   const validateStep1 = () => {
     const newErrors: Record<string, string> = {};
     
     if (!validateName(formData.name)) {
-      newErrors.name = 'Name must be at least 2 characters';
+      newErrors.name = t('name_validation_error') || 'Name must be at least 2 characters';
     }
     
     if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = t('email_validation_error') || 'Please enter a valid email address';
     }
     
     const passwordValidation = validatePassword(formData.password);
@@ -49,7 +51,7 @@ const RegisterForm: React.FC = () => {
     }
     
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = t('password_match_error') || 'Passwords do not match';
     }
     
     setErrors(newErrors);
@@ -60,11 +62,11 @@ const RegisterForm: React.FC = () => {
     const newErrors: Record<string, string> = {};
     
     if (!formData.role) {
-      newErrors.role = 'Please select your role';
+      newErrors.role = t('role_required_error') || 'Please select your role';
     }
     
     if (formData.skills.length === 0) {
-      newErrors.skills = 'Please select at least one skill';
+      newErrors.skills = t('skills_required_error') || 'Please select at least one skill';
     }
     
     setErrors(newErrors);
@@ -104,7 +106,7 @@ const RegisterForm: React.FC = () => {
       await register(formData);
       navigate('/dashboard');
     } catch (err: any) {
-      setErrors({ submit: err.message || 'Registration failed' });
+      setErrors({ submit: err.message || t('registration_failed') || 'Registration failed' });
     } finally {
       setIsLoading(false);
     }
@@ -116,7 +118,11 @@ const RegisterForm: React.FC = () => {
   ];
 
   const roles = [
-    'Developer', 'Designer', 'Product Manager', 'Business/Marketing', 'Data Scientist',
+    t('role_developer') || 'Developer', 
+    t('role_designer') || 'Designer', 
+    'Product Manager', 
+    'Business/Marketing', 
+    'Data Scientist',
   ];
 
   return (

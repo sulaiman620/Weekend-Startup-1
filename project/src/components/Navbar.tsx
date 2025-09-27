@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Rocket, LogIn, UserCircle } from 'lucide-react';
+import { Menu, X, Rocket, LogIn, UserCircle, Globe } from 'lucide-react';
 import useAuth from '../hooks/useAuth';
+import { useLanguage } from '../context/LanguageContext';
 import Button from './Button';
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
+  const { language, setLanguage, t } = useLanguage();
   const location = useLocation();
 
   useEffect(() => {
@@ -37,21 +39,21 @@ const Navbar: React.FC = () => {
   }`;
 
   const navLinks = [
-    { name: 'Home', path: '/' },
-    { name: 'Schedule', path: '/schedule' },
-    { name: 'Teams', path: '/teams' },
-    { name: 'Submit Idea', path: '/submit-idea' },
+    { name: t('nav_home'), path: '/' },
+    { name: t('nav_schedule'), path: '/schedule' },
+    { name: t('nav_teams'), path: '/teams' },
+    { name: t('nav_submit_idea'), path: '/submit-idea' },
   ];
 
   const authLinks = isAuthenticated
     ? [
-        { name: 'Dashboard', path: '/dashboard' },
-        { name: 'Profile', path: '/profile' },
-        ...(user?.role === 'admin' ? [{ name: 'Admin', path: '/admin' }] : []),
+        { name: t('nav_dashboard'), path: '/dashboard' },
+        { name: t('nav_profile'), path: '/profile' },
+        ...(user?.role === 'admin' ? [{ name: t('nav_admin'), path: '/admin' }] : []),
       ]
     : [
-        { name: 'Login', path: '/login' },
-        { name: 'Register', path: '/register' },
+        { name: t('nav_login'), path: '/login' },
+        { name: t('nav_register'), path: '/register' },
       ];
 
   return (
@@ -64,35 +66,52 @@ const Navbar: React.FC = () => {
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <Rocket size={28} className="text-indigo-600 mr-2" />
+              <Rocket size={28} className={`${scrolled ? 'text-indigo-600' : 'text-white'} mr-2`} />
             </motion.div>
             <motion.span
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 0.5 }}
-              className="font-bold text-xl text-gray-800"
+              className={`font-bold text-xl ${scrolled ? 'text-gray-800' : 'text-white'}`}
             >
               WeekendStartupSVC
             </motion.span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`text-sm font-medium transition-colors hover:text-indigo-600 ${
-                  location.pathname === link.path
-                    ? 'text-indigo-600'
-                    : 'text-gray-700'
+          {/* Desktop Navigation */}            <div className="hidden md:flex items-center space-x-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`text-sm font-medium transition-colors hover:text-indigo-600 ${
+                    location.pathname === link.path
+                      ? 'text-indigo-600'
+                      : scrolled ? 'text-gray-700' : 'text-white'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ))}
+
+              <div className="h-5 w-px bg-gray-300"></div>
+
+              {/* Language Switcher */}
+              <button
+                onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                className={`flex items-center text-sm font-medium transition-colors hover:text-indigo-600 language-switch ${
+                  scrolled ? 'text-gray-700' : 'text-white'
                 }`}
               >
-                {link.name}
-              </Link>
-            ))}
+                <motion.div
+                  whileHover={{ rotate: 20 }}
+                  className="language-switch-icon"
+                >
+                  <Globe size={16} className="mr-1" />
+                </motion.div>
+                <span>{t('language_switch')}</span>
+              </button>
 
-            <div className="h-5 w-px bg-gray-300"></div>
+              <div className="h-5 w-px bg-gray-300"></div>
 
             {isAuthenticated ? (
               <div className="flex items-center space-x-4">
@@ -103,7 +122,7 @@ const Navbar: React.FC = () => {
                     className={`text-sm font-medium transition-colors hover:text-indigo-600 ${
                       location.pathname === link.path
                         ? 'text-indigo-600'
-                        : 'text-gray-700'
+                        : scrolled ? 'text-gray-700' : 'text-white'
                     }`}
                   >
                     {link.name}
@@ -115,7 +134,7 @@ const Navbar: React.FC = () => {
                   onClick={() => logout()}
                   className="ml-2"
                 >
-                  Logout
+                  {t('nav_logout')}
                 </Button>
               </div>
             ) : (
@@ -138,7 +157,7 @@ const Navbar: React.FC = () => {
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-indigo-600 focus:outline-none"
+              className={`${scrolled ? 'text-gray-700' : 'text-white'} hover:text-indigo-600 focus:outline-none`}
             >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -169,6 +188,34 @@ const Navbar: React.FC = () => {
                     {link.name}
                   </Link>
                 ))}
+
+                <div className="h-px w-full bg-gray-200 my-2"></div>
+
+                {/* Mobile Language Switcher */}
+                <motion.button
+                  onClick={() => setLanguage(language === 'en' ? 'ar' : 'en')}
+                  className="flex items-center justify-between text-base font-medium px-2 py-1 rounded-md text-gray-700 hover:bg-gray-100 language-switch w-full"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <div className="flex items-center">
+                    <motion.div
+                      whileHover={{ rotate: 20 }}
+                      className="language-switch-icon"
+                    >
+                      <Globe size={18} className="mr-2" />
+                    </motion.div>
+                    <span>{t('language_switch')}</span>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: language === 'ar' ? 0 : 180 }}
+                    transition={{ duration: 0.3 }}
+                    className="text-indigo-600"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                  </motion.div>
+                </motion.button>
 
                 <div className="h-px w-full bg-gray-200 my-2"></div>
 

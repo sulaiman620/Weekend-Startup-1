@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { LogIn, AlertCircle } from 'lucide-react';
 import Button from '../Button';
 import useAuth from '../../hooks/useAuth';
+import { useLanguage } from '../../context/LanguageContext';
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ const LoginForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { t, dir } = useLanguage();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,13 +36,14 @@ const LoginForm: React.FC = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+      dir={dir}
     >
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-full mb-4">
           <LogIn size={28} className="text-indigo-600" />
         </div>
-        <h2 className="text-2xl font-bold text-gray-800">Welcome Back</h2>
-        <p className="text-gray-600 mt-1">Sign in to your account</p>
+        <h2 className="text-2xl font-bold text-gray-800">{t('login_title')}</h2>
+        <p className="text-gray-600 mt-1">{t('login_subtitle')}</p>
       </div>
 
       {error && (
@@ -57,7 +60,7 @@ const LoginForm: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-            Email
+            {t('login_email')}
           </label>
           <input
             id="email"
@@ -73,10 +76,10 @@ const LoginForm: React.FC = () => {
         <div className="mb-6">
           <div className="flex items-center justify-between mb-1">
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
+              {t('login_password')}
             </label>
             <Link to="/forgot-password" className="text-sm text-indigo-600 hover:text-indigo-800">
-              Forgot password?
+              {t('forgot_password')}
             </Link>
           </div>
           <input
@@ -95,20 +98,20 @@ const LoginForm: React.FC = () => {
           className="w-full"
           isLoading={isLoading}
         >
-          Sign In
+          {t('login_button')}
         </Button>
 
         <div className="mt-6 text-center">
           <p className="text-gray-600">
-            Don't have an account?{' '}
+            {t('login_no_account')}{' '}
             <Link to="/register" className="text-indigo-600 hover:text-indigo-800 font-medium">
-              Sign up
+              {t('login_register')}
             </Link>
           </p>
         </div>
 
         <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-500 text-center mb-4">Or continue with demo accounts</p>
+          <p className="text-sm text-gray-500 text-center mb-4">{t('or_continue_with_demo')}</p>
           <div className="grid grid-cols-2 gap-3">
             <Button
               type="button"
@@ -118,7 +121,7 @@ const LoginForm: React.FC = () => {
                 setPassword('password');
               }}
             >
-              Demo User
+              {t('demo_user')}
             </Button>
             <Button
               type="button"
@@ -128,7 +131,7 @@ const LoginForm: React.FC = () => {
                 setPassword('password');
               }}
             >
-              Demo Admin
+              {t('demo_admin')}
             </Button>
           </div>
         </div>

@@ -4,11 +4,14 @@ import { Link } from 'react-router-dom';
 import { Users, Award, Calendar, ArrowRight, CheckCircle } from 'lucide-react';
 import HeroSection from '../components/HeroSection';
 import Button from '../components/Button';
+import { useLanguage } from '../context/LanguageContext';
 
 const Home: React.FC = () => {
-  // Set event date to 30 days from now
-  const eventDate = new Date();
-  eventDate.setDate(eventDate.getDate() + 30);
+  // Get language context
+  const { t, dir } = useLanguage();
+  
+  // Set specific event dates: October 30 - November 1, 2025
+  const eventDate = new Date('2025-10-30T00:00:00');
   
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -35,7 +38,7 @@ const Home: React.FC = () => {
       
       {/* About Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-16"
             initial="hidden"
@@ -44,10 +47,10 @@ const Home: React.FC = () => {
             variants={fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What is the WeekendStartupSVC Challenge?
+              {t('home_about_title')}
             </h2>
             <p className="text-xl text-gray-600">
-              An intense 48-hour event where entrepreneurs, developers, designers, and business minds come together to build innovative solutions to real-world problems.
+              {t('home_about_description')}
             </p>
           </motion.div>
           
@@ -61,28 +64,36 @@ const Home: React.FC = () => {
             {[
               {
                 icon: <Calendar size={32} className="text-indigo-600" />,
-                title: '48 Hours',
-                description: 'From concept to MVP in just one weekend with expert guidance and mentorship.'
+                title: t('home_feature_idea'),
+                description: t('home_feature_idea_desc')
               },
               {
                 icon: <Users size={32} className="text-indigo-600" />,
-                title: 'Team Building',
-                description: 'Connect with talented individuals across different disciplines to form the perfect team.'
+                title: t('home_feature_network'),
+                description: t('home_feature_network_desc')
               },
               {
                 icon: <Award size={32} className="text-indigo-600" />,
-                title: 'Prizes & Recognition',
-                description: 'Win cash prizes, investor meetings, and gain exposure for your startup idea.'
+                title: t('home_feature_learn'),
+                description: t('home_feature_learn_desc')
               }
             ].map((feature, index) => (
               <motion.div 
                 key={index}
                 variants={fadeIn}
                 className="bg-gray-50 p-8 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+                whileHover={{ 
+                  y: -5,
+                  boxShadow: "0 10px 25px -5px rgba(66, 153, 225, 0.4)"
+                }}
               >
-                <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <motion.div 
+                  className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto"
+                  whileHover={{ rotate: 5, scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   {feature.icon}
-                </div>
+                </motion.div>
                 <h3 className="text-xl font-bold text-gray-800 mb-3 text-center">{feature.title}</h3>
                 <p className="text-gray-600 text-center">{feature.description}</p>
               </motion.div>
@@ -93,7 +104,7 @@ const Home: React.FC = () => {
       
       {/* How It Works */}
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-16"
             initial="hidden"
@@ -102,10 +113,10 @@ const Home: React.FC = () => {
             variants={fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How It Works
+              {t('home_how_title')}
             </h2>
             <p className="text-xl text-gray-600">
-              From registration to final pitch, here's your journey through the WeekendStartupSVC Challenge
+              {t('home_how_description')}
             </p>
           </motion.div>
           
@@ -119,23 +130,23 @@ const Home: React.FC = () => {
             {[
               {
                 step: 1,
-                title: 'Register & Submit Your Idea',
-                description: 'Create an account and submit your startup idea or join an existing team.'
+                title: t('home_step_1'),
+                description: t('home_step_1_desc')
               },
               {
                 step: 2,
-                title: 'Form Your Team',
-                description: 'Connect with other participants to build a balanced team with complementary skills.'
+                title: t('home_step_2'),
+                description: t('home_step_2_desc')
               },
               {
                 step: 3,
-                title: 'Weekend Hackathon',
-                description: 'Spend 48 hours building your MVP with mentorship from industry experts.'
+                title: t('home_step_3'),
+                description: t('home_step_3_desc')
               },
               {
                 step: 4,
-                title: 'Final Pitch',
-                description: 'Present your solution to judges and investors for a chance to win prizes.'
+                title: t('home_step_4'),
+                description: t('home_step_4_desc')
               }
             ].map((step, index) => (
               <motion.div 
@@ -175,7 +186,7 @@ const Home: React.FC = () => {
       
       {/* Previous Winners */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-16"
             initial="hidden"
@@ -184,10 +195,10 @@ const Home: React.FC = () => {
             variants={fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Previous Winners
+              {t('home_winners_title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Check out the innovative solutions from our past challenges
+              {t('home_winners_subtitle')}
             </p>
           </motion.div>
           
@@ -200,20 +211,20 @@ const Home: React.FC = () => {
           >
             {[
               {
-                name: 'EcoTrack',
-                description: 'A mobile app that helps users track and reduce their carbon footprint through daily activities.',
+                name: t('home_winner_ecotrack'),
+                description: t('home_winner_ecotrack_desc'),
                 image: 'https://images.pexels.com/photos/3943716/pexels-photo-3943716.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 category: 'Environment'
               },
               {
-                name: 'MealPrep AI',
-                description: 'AI-powered meal planning and grocery shopping assistant that reduces food waste.',
+                name: t('home_winner_mealprep'),
+                description: t('home_winner_mealprep_desc'),
                 image: 'https://images.pexels.com/photos/4144923/pexels-photo-4144923.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 category: 'Food Tech'
               },
               {
-                name: 'StudyBuddy',
-                description: 'Peer-to-peer learning platform connecting students for collaborative study sessions.',
+                name: t('home_winner_studybuddy'),
+                description: t('home_winner_studybuddy_desc'),
                 image: 'https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
                 category: 'EdTech'
               }
@@ -251,7 +262,7 @@ const Home: React.FC = () => {
       
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center"
             initial={{ opacity: 0, y: 20 }}
@@ -260,21 +271,21 @@ const Home: React.FC = () => {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Turn Your Idea Into Reality?
+              {t('home_cta_title')}
             </h2>
             <p className="text-xl text-indigo-100 mb-8">
-              Join hundreds of entrepreneurs and innovators in the next WeekendStartupSVC Challenge in Sur, Oman.
+              {t('home_cta_subtitle')}
             </p>
             
             <div className="flex flex-wrap justify-center gap-4">
               <Link to="/register">
                 <Button className="bg-white text-indigo-600 hover:bg-gray-100 px-8 py-3 text-lg">
-                  Register Now
+                  {t('home_cta_register')}
                 </Button>
               </Link>
               <Link to="/submit-idea">
                 <Button variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-3 text-lg">
-                  Submit Your Idea
+                  {t('home_cta_submit')}
                 </Button>
               </Link>
             </div>
@@ -284,7 +295,7 @@ const Home: React.FC = () => {
       
       {/* Testimonials */}
       <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-16"
             initial="hidden"
@@ -293,10 +304,10 @@ const Home: React.FC = () => {
             variants={fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Participants Say
+              {t('home_testimonials_title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Hear from past participants about their experience
+              {t('home_testimonials_subtitle')}
             </p>
           </motion.div>
           
@@ -352,7 +363,7 @@ const Home: React.FC = () => {
       
       {/* FAQ Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4" dir={dir}>
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-16"
             initial="hidden"
@@ -361,10 +372,10 @@ const Home: React.FC = () => {
             variants={fadeIn}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {t('home_faq_title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about the WeekendStartupSVC Challenge
+              {t('home_faq_subtitle')}
             </p>
           </motion.div>
           
@@ -420,7 +431,7 @@ const Home: React.FC = () => {
           >
             <Link to="/faq">
               <Button variant="outline">
-                View All FAQs
+                {t('home_faq_viewall')}
               </Button>
             </Link>
           </motion.div>
